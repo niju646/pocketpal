@@ -194,4 +194,112 @@ class TransactionCubit extends Cubit<TransactionState> {
       );
     }
   }
+
+  //current monthly expense
+  double getCurrentMonthExpense() {
+    final now = DateTime.now();
+
+    double monthlyExpense = 0;
+
+    for (final transaction in transactions) {
+      if (!transaction.isIncome) {
+        final transactionDate = DateTime.parse(transaction.date);
+
+        if (transactionDate.year == now.year &&
+            transactionDate.month == now.month) {
+          monthlyExpense += transaction.amount;
+        }
+      }
+    }
+
+    log('current month expense: $monthlyExpense');
+
+    return monthlyExpense;
+  }
+
+  double getPreviousMonthExpense() {
+    final now = DateTime.now();
+
+    DateTime previousMonth;
+
+    if (now.month == 1) {
+      previousMonth = DateTime(now.year - 1, 12);
+    } else {
+      previousMonth = DateTime(now.year, now.month - 1);
+    }
+
+    double previousExpense = 0;
+
+    for (final transaction in transactions) {
+      if (!transaction.isIncome) {
+        final transactionDate = DateTime.parse(transaction.date);
+
+        if (transactionDate.year == previousMonth.year &&
+            transactionDate.month == previousMonth.month) {
+          previousExpense += transaction.amount;
+        }
+      }
+    }
+
+    return previousExpense;
+  }
+
+  double getMonthlyExpenseChangePercentage() {
+    final currentExpense = getCurrentMonthExpense();
+    final previousExpense = getPreviousMonthExpense();
+
+    if (previousExpense == 0) {
+      return 0;
+    }
+
+    return ((currentExpense - previousExpense) / previousExpense) * 100;
+  }
+
+  Map<String, double> getCurrentMonthExpensesByCategory() {
+    final now = DateTime.now();
+
+    Map<String, double> categoryExpenses = {};
+
+    for (final transaction in transactions) {
+      if (!transaction.isIncome) {
+        final transactionDate = DateTime.parse(transaction.date);
+
+        if (transactionDate.year == now.year &&
+            transactionDate.month == now.month) {
+          if (categoryExpenses.containsKey(transaction.category)) {
+            categoryExpenses[transaction.category] =
+                categoryExpenses[transaction.category]! + transaction.amount;
+          } else {
+            categoryExpenses[transaction.category] = transaction.amount;
+          }
+        }
+      }
+    }
+
+    return categoryExpenses;
+  }
+
+  Map<String, int> getCurrentMonthExpenseCountByCategory() {
+    final now = DateTime.now();
+
+    Map<String, int> categoryCounts = {};
+
+    for (final transaction in transactions) {
+      if (!transaction.isIncome) {
+        final transactionDate = DateTime.parse(transaction.date);
+
+        if (transactionDate.year == now.year &&
+            transactionDate.month == now.month) {
+          if (categoryCounts.containsKey(transaction.category)) {
+            categoryCounts[transaction.category] =
+                categoryCounts[transaction.category]! + 1;
+          } else {
+            categoryCounts[transaction.category] = 1;
+          }
+        }
+      }
+    }
+
+    return categoryCounts;
+  }
 }
