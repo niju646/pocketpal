@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pocket_pal/core/shared/utlis/date_helper.dart';
+import 'package:pocket_pal/core/shared/utlis/get_category_icons.dart';
+import 'package:pocket_pal/core/shared/widgets/common_dialog.dart';
 import 'package:pocket_pal/features/home/cubit/transaction_cubit.dart';
 import 'package:pocket_pal/features/home/widgets/common_bottom_sheet_two.dart';
 import 'package:pocket_pal/features/home/widgets/common_empty_screen.dart';
@@ -62,14 +64,40 @@ class _TransactionListingScreenState extends State<TransactionListingScreen> {
                     itemBuilder: (context, index) {
                       final transaction = transactions[index];
 
-                      return commonTransactionTile(
-                        icon: Icons.category,
-                        title: transaction.title,
-                        subtitle:
-                            '${transaction.description ?? transaction.category} • ${formatDate(DateTime.parse(transaction.date))} ',
-                        amount:
-                            '${transaction.isIncome ? '+' : '-'}₹${transaction.amount.toStringAsFixed(0)}',
-                        isIncome: transaction.isIncome,
+                      return GestureDetector(
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CommonDialog(
+                                title: 'Delete?',
+                                message: 'Are you sure you want to delete?',
+                                confirmText: 'Delete',
+                                onConfirm: () {
+                                  context
+                                      .read<TransactionCubit>()
+                                      .deleteTransaction(transaction);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Deleted ${transaction.title}',
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                        child: commonTransactionTile(
+                          icon: getCategoryIcon(transaction.category),
+                          title: transaction.title,
+                          subtitle:
+                              '${transaction.description ?? transaction.category} • ${formatDate(DateTime.parse(transaction.date))} ',
+                          amount:
+                              '${transaction.isIncome ? '+' : '-'}₹${transaction.amount.toStringAsFixed(0)}',
+                          isIncome: transaction.isIncome,
+                        ),
                       );
                     },
                   );

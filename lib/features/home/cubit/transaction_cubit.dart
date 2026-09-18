@@ -195,6 +195,41 @@ class TransactionCubit extends Cubit<TransactionState> {
     }
   }
 
+  //delete
+  Future<void> deleteTransaction(TransactionModel transaction) async {
+    try {
+      await localStorage.deleteTransaction(transaction);
+
+      transactions.remove(transaction);
+
+      if (transaction.isIncome) {
+        totalIncome = totalIncome - transaction.amount;
+      } else {
+        totalExpense = totalExpense - transaction.amount;
+      }
+
+      emit(
+        TransactionInitial(
+          totalIncome: totalIncome,
+          totalExpense: totalExpense,
+        ),
+      );
+
+      log('transaction deleted');
+      log('total income: $totalIncome');
+      log('total expense: $totalExpense');
+      log('balance: ${totalIncome - totalExpense}');
+    } catch (e) {
+      emit(
+        TransactionDeleteError(
+          e.toString(),
+          totalIncome: totalIncome,
+          totalExpense: totalExpense,
+        ),
+      );
+    }
+  }
+
   //current monthly expense
   double getCurrentMonthExpense() {
     final now = DateTime.now();
@@ -301,5 +336,13 @@ class TransactionCubit extends Cubit<TransactionState> {
     }
 
     return categoryCounts;
+  }
+
+  //utilization percentage
+  double getUtilizationPercentage() {
+    if (totalIncome == 0) {
+      return 0;
+    }
+    return (totalExpense / totalIncome) * 100;
   }
 }

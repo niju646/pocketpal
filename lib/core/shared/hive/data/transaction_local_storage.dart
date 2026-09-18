@@ -16,6 +16,22 @@ class TransactionLocalStorage {
     }).toList();
   }
 
+  Future<void> deleteTransaction(TransactionModel transaction) async {
+    for (final key in box.keys) {
+      final data = box.get(key);
+
+      final storedTransaction = TransactionModel.fromMap(data);
+
+      if (storedTransaction.date == transaction.date &&
+          storedTransaction.amount == transaction.amount &&
+          storedTransaction.category == transaction.category &&
+          storedTransaction.isIncome == transaction.isIncome) {
+        await box.delete(key);
+        break;
+      }
+    }
+  }
+
   Future<void> clearAllTransactions() async {
     await box.clear();
   }

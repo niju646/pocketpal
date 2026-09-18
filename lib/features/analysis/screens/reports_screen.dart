@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pocket_pal/core/shared/utlis/get_category_color.dart';
 import 'package:pocket_pal/core/shared/utlis/get_category_icons.dart';
 import 'package:pocket_pal/core/shared/utlis/get_month_helper.dart';
+import 'package:pocket_pal/features/analysis/widgets/section_label.dart';
 import 'package:pocket_pal/features/home/cubit/transaction_cubit.dart';
 
 class ReportsScreen extends StatelessWidget {
@@ -77,7 +78,7 @@ class ReportsScreen extends StatelessWidget {
             children: [
               Expanded(flex: 7, child: _buildTotalSpendCard(context)),
               const SizedBox(width: 16),
-              Expanded(flex: 5, child: _buildBudgetCard()),
+              Expanded(flex: 5, child: _buildBudgetCard(context)),
             ],
           );
         }
@@ -86,7 +87,7 @@ class ReportsScreen extends StatelessWidget {
           children: [
             _buildTotalSpendCard(context),
             const SizedBox(height: 16),
-            _buildBudgetCard(),
+            _buildBudgetCard(context),
           ],
         );
       },
@@ -120,7 +121,7 @@ class ReportsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _sectionLabel('TOTAL MONTHLY SPEND'),
+                    sectionLabel('TOTAL MONTHLY SPEND'),
                     const SizedBox(height: 4),
                     Text(
                       '₹ ${monthlyExpense.toStringAsFixed(0)}',
@@ -199,7 +200,10 @@ class ReportsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBudgetCard() {
+  Widget _buildBudgetCard(BuildContext context) {
+    final utilization = context
+        .read<TransactionCubit>()
+        .getUtilizationPercentage();
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: _cardDecoration(),
@@ -212,11 +216,11 @@ class ReportsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _sectionLabel('BUDGET VELOCITY'),
+                    sectionLabel('BUDGET VELOCITY'),
                     const SizedBox(height: 4),
-                    const Text(
-                      '77.5% Utilized',
-                      style: TextStyle(
+                    Text(
+                      '${utilization.toStringAsFixed(1)}% Utilized',
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF000F1D),
@@ -596,18 +600,6 @@ class ReportsScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _sectionLabel(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 11,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 1,
-        color: Color(0xFF43474C),
       ),
     );
   }

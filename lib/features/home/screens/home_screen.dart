@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pocket_pal/core/shared/utlis/date_helper.dart';
+import 'package:pocket_pal/core/shared/utlis/get_category_icons.dart';
 import 'package:pocket_pal/features/home/cubit/transaction_cubit.dart';
 import 'package:pocket_pal/features/home/screens/transaction_listing_screen.dart';
 import 'package:pocket_pal/features/home/widgets/bottom_sheet.dart';
@@ -233,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     final transaction = transactions[index];
 
                     return commonTransactionTile(
-                      icon: Icons.category,
+                      icon: getCategoryIcon(transaction.category),
                       title: transaction.title,
                       subtitle:
                           '${transaction.description ?? transaction.category} • ${formatDate(DateTime.parse(transaction.date))}',

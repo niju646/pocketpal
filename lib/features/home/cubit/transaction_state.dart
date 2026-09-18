@@ -80,8 +80,18 @@ final class ExpenseError extends TransactionState {
     super.totalExpense = 0,
   });
 }
-//delete data
 
+final class TransactionDeleteError extends TransactionState {
+  final String message;
+
+  const TransactionDeleteError(
+    this.message, {
+    super.totalIncome = 0,
+    super.totalExpense = 0,
+  });
+}
+
+//delete data
 final class DataClearing extends TransactionState {
   const DataClearing({required super.totalIncome, required super.totalExpense});
 }

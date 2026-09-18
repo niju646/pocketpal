@@ -101,7 +101,19 @@ class ProfileScreen extends StatelessWidget {
                   icon: Icons.currency_rupee,
                   title: 'Currency',
                   subtitle: 'Indian Rupee (₹)',
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return CommonDialog(
+                          title: 'Currency',
+                          message: 'No other options Avaliable yet.',
+                          confirmText: 'Ok',
+                          onConfirm: () {},
+                        );
+                      },
+                    );
+                  },
                 ),
 
                 const Divider(height: 1),
@@ -138,10 +150,6 @@ class ProfileScreen extends StatelessWidget {
                   subtitle: 'Delete all your transactions',
                   iconColor: Colors.red,
                   onTap: () {
-                    // context.read<TransactionCubit>().clearAllData();
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   const SnackBar(content: Text('All data cleared')),
-                    // );
                     showDialog(
                       context: context,
                       builder: (context) {
