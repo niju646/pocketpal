@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_pal/core/shared/utlis/date_helper.dart';
 import 'package:pocket_pal/core/shared/widgets/common_date_picker.dart';
+import 'package:pocket_pal/core/shared/widgets/custom_submit_button.dart';
 
 class CommonTransactionBottomSheet extends StatefulWidget {
   final TextEditingController amountController;
@@ -277,44 +278,29 @@ class _CommonTransactionBottomSheetState
               const SizedBox(height: 22),
 
               // Submit button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final amount = double.tryParse(
-                      widget.amountController.text.trim(),
-                    );
+              CustomSubmitButton(
+                buttonText: isIncome ? 'Add Income' : 'Add Expense',
+                onPressed: () {
+                  final amount = double.tryParse(
+                    widget.amountController.text.trim(),
+                  );
 
-                    if (amount == null || amount <= 0) {
-                      return;
-                    }
+                  if (amount == null || amount <= 0) {
+                    return;
+                  }
 
-                    if (selectedCategory == null) {
-                      return;
-                    }
+                  if (selectedCategory == null) {
+                    return;
+                  }
 
-                    widget.onSubmit?.call(
-                      amount,
-                      selectedCategory!,
-                      selectedDate,
-                      widget.descriptionController.text.trim(),
-                      isIncome,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                  child: Text(
-                    isIncome ? 'Add Income' : 'Add Expense',
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ),
+                  widget.onSubmit?.call(
+                    amount,
+                    selectedCategory!,
+                    selectedDate,
+                    widget.descriptionController.text.trim(),
+                    isIncome,
+                  );
+                },
               ),
             ],
           ),

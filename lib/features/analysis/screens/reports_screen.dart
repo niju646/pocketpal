@@ -252,14 +252,22 @@ class ReportsScreen extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: LinearProgressIndicator(
-              value: 0.775,
-              minHeight: 12,
-              backgroundColor: const Color(0xFFE5EEFF),
-              valueColor: const AlwaysStoppedAnimation(Color(0xFF000F1D)),
-            ),
+          BlocBuilder<TransactionCubit, TransactionState>(
+            builder: (context, state) {
+              final utilization = context
+                  .read<TransactionCubit>()
+                  .getUtilizationPercentage();
+
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: LinearProgressIndicator(
+                  value: utilization / 100,
+                  minHeight: 12,
+                  backgroundColor: const Color(0xFFE5EEFF),
+                  valueColor: const AlwaysStoppedAnimation(Color(0xFF000F1D)),
+                ),
+              );
+            },
           ),
 
           const SizedBox(height: 8),
@@ -267,7 +275,12 @@ class ReportsScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _budgetText('Spent:', '₹15,500'),
+              BlocBuilder<TransactionCubit, TransactionState>(
+                builder: (context, state) {
+                  final spent = state.totalExpense.toString();
+                  return _budgetText('Spent:', spent);
+                },
+              ),
               _budgetText('Limit:', '₹20,000'),
             ],
           ),

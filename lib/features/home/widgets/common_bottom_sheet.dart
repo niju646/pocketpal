@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_pal/core/shared/widgets/common_date_picker.dart';
+import 'package:pocket_pal/core/shared/widgets/custom_submit_button.dart';
+import 'package:pocket_pal/core/shared/widgets/custom_text_field.dart';
 
 class CommonBottomSheet extends StatefulWidget {
   final String title;
@@ -46,7 +48,12 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,14 +65,11 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
 
           const SizedBox(height: 20),
 
-          TextField(
+          CustomTextField(
             controller: widget.amountController,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              prefixText: '₹ ',
-              labelText: '0.00',
-              hintText: 'Enter amount',
-            ),
+            prefix: '₹ ',
+            hinttext: 'Enter amount',
           ),
 
           const SizedBox(height: 16),
@@ -114,12 +118,6 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
 
           const SizedBox(height: 16),
 
-          // TextField(
-          //   decoration: const InputDecoration(
-          //     labelText: 'Date',
-          //     hintText: 'Select date',
-          //   ),
-          // ),
           const Text('Select a date'),
           const SizedBox(height: 5),
           GestureDetector(
@@ -154,31 +152,20 @@ class _CommonBottomSheetState extends State<CommonBottomSheet> {
           ),
 
           const SizedBox(height: 16),
-
-          TextField(
+          CustomTextField(
             controller: widget.descriptionController,
-            decoration: const InputDecoration(
-              labelText: 'Description',
-              hintText: 'Enter description',
-            ),
+            prefix: '',
+            hinttext: 'Enter description',
           ),
 
           const SizedBox(height: 16),
-
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              onPressed: () {
-                if (selectedCategory != null) {
-                  widget.onTap?.call(selectedCategory!, selectedDate);
-                }
-              },
-              child: Text(
-                widget.bottomTitle,
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+          CustomSubmitButton(
+            buttonText: widget.bottomTitle,
+            onPressed: () {
+              if (selectedCategory != null) {
+                widget.onTap?.call(selectedCategory!, selectedDate);
+              }
+            },
           ),
 
           const SizedBox(height: 10),

@@ -4,7 +4,7 @@ import 'package:pocket_pal/core/shared/utlis/date_helper.dart';
 import 'package:pocket_pal/core/shared/utlis/get_category_icons.dart';
 import 'package:pocket_pal/features/home/cubit/transaction_cubit.dart';
 import 'package:pocket_pal/features/home/screens/transaction_listing_screen.dart';
-import 'package:pocket_pal/features/home/widgets/bottom_sheet.dart';
+import 'package:pocket_pal/features/home/widgets/common_bottom_sheet.dart';
 import 'package:pocket_pal/features/home/widgets/build_balance_card.dart';
 import 'package:pocket_pal/features/home/widgets/common_day_widget.dart';
 import 'package:pocket_pal/features/home/widgets/common_empty_screen.dart';
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F8),
+      backgroundColor: const Color(0xFFF8F9FF),
       appBar: AppBar(
         backgroundColor: const Color(0xFFF7F7F8),
         elevation: 0,
@@ -267,29 +267,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 context: context,
                 isScrollControlled: true,
                 builder: (context) {
-                  return FractionallySizedBox(
-                    heightFactor: 1,
-                    child: CommonBottomSheet(
-                      amountController: amountController,
-                      descriptionController: descriptionController,
-                      title: 'Add Income',
-                      bottomTitle: 'Add Income',
-                      onTap: (category, selectedDate) {
-                        final text = amountController.text.trim();
-                        if (text.isNotEmpty) {
-                          final amount = double.tryParse(text) ?? 0;
-                          context.read<TransactionCubit>().addIncome(
-                            amount: amount,
-                            category: category,
-                            date: selectedDate,
-                            description: descriptionController.text.trim(),
-                          );
-                          amountController.clear();
-                          descriptionController.clear();
-                        }
-                        Navigator.pop(context);
-                      },
-                    ),
+                  return CommonBottomSheet(
+                    amountController: amountController,
+                    descriptionController: descriptionController,
+                    title: 'Add Income',
+                    bottomTitle: 'Add Income',
+                    onTap: (category, selectedDate) {
+                      final text = amountController.text.trim();
+                      if (text.isNotEmpty) {
+                        final amount = double.tryParse(text) ?? 0;
+                        context.read<TransactionCubit>().addIncome(
+                          amount: amount,
+                          category: category,
+                          date: selectedDate,
+                          description: descriptionController.text.trim(),
+                        );
+                        amountController.clear();
+                        descriptionController.clear();
+                      }
+                      Navigator.pop(context);
+                    },
                   );
                 },
               );
