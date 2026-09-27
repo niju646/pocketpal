@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:pocket_pal/core/shared/bottom_nav/controller/bottom_nav_controller.dart';
 import 'package:pocket_pal/features/analysis/screens/reports_screen.dart';
 import 'package:pocket_pal/features/home/screens/home_screen.dart';
 import 'package:pocket_pal/features/profile/screens/profile_screen.dart';
+import 'package:pocket_pal/features/reminders/screens/reminder_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key});
@@ -17,14 +19,26 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   DateTime? lastPressed;
 
   List<Widget> _getPages() {
-    return [const HomeScreen(), const ReportsScreen(), const ProfileScreen()];
+    return [
+      const HomeScreen(),
+      const ReportsScreen(),
+      const ReminderScreen(),
+      const ProfileScreen(),
+    ];
   }
 
   List<BottomNavigationBarItem> _getBottomNavItems() {
     return [
-      _bottomNavItem(icon: Icons.home, label: 'Home'),
-      _bottomNavItem(icon: CupertinoIcons.graph_circle, label: 'Analytics'),
-      _bottomNavItem(icon: Icons.person, label: 'Profile'),
+      _bottomNavItem(icon: HugeIcons.strokeRoundedHome05, label: 'Home'),
+      _bottomNavItem(
+        icon: HugeIcons.strokeRoundedAnalytics01,
+        label: 'Analytics',
+      ),
+      _bottomNavItem(
+        icon: HugeIcons.strokeRoundedNotification02,
+        label: 'Reminders',
+      ),
+      _bottomNavItem(icon: HugeIcons.strokeRoundedUser, label: 'Profile'),
     ];
   }
 
@@ -60,12 +74,12 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   }
 
   BottomNavigationBarItem _bottomNavItem({
-    required IconData icon,
+    required dynamic icon,
     required String label,
   }) {
     return BottomNavigationBarItem(
-      icon: Icon(icon, size: 24),
-      activeIcon: Icon(icon, size: 26),
+      icon: HugeIcon(icon: icon, size: 24),
+      activeIcon: HugeIcon(icon: icon, size: 26),
       label: label,
     );
   }

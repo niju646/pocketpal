@@ -27,12 +27,59 @@ Future<DateTime?> commonDatePicker({
 
           datePickerTheme: DatePickerThemeData(
             backgroundColor: const Color(0xFFF7F7F8),
+
+            // Header
             headerBackgroundColor: Colors.black,
             headerForegroundColor: Colors.white,
-            todayForegroundColor: WidgetStateProperty.all(Colors.white),
+
+            // Selected date
+            dayBackgroundColor: WidgetStateProperty.resolveWith<Color?>((
+              states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return Colors.black;
+              }
+
+              return Colors.transparent;
+            }),
+
+            dayForegroundColor: WidgetStateProperty.resolveWith<Color?>((
+              states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return Colors.white;
+              }
+
+              return Colors.black;
+            }),
+
+            // Today border
             todayBorder: const BorderSide(color: Colors.black),
-            dayForegroundColor: WidgetStateProperty.all(Colors.black),
-            dayOverlayColor: WidgetStateProperty.all(Colors.white),
+
+            // Today text
+            todayForegroundColor: WidgetStateProperty.resolveWith<Color?>((
+              states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return Colors.white;
+              }
+
+              return Colors.black;
+            }),
+
+            // Press / hover effect
+            dayOverlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+              if (states.contains(WidgetState.pressed)) {
+                return Colors.black.withAlpha(25);
+              }
+
+              if (states.contains(WidgetState.hovered)) {
+                return Colors.black.withAlpha(15);
+              }
+
+              return Colors.transparent;
+            }),
+
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),

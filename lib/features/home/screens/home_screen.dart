@@ -304,29 +304,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 context: context,
                 isScrollControlled: true,
                 builder: (context) {
-                  return FractionallySizedBox(
-                    heightFactor: 1,
-                    child: CommonBottomSheet(
-                      amountController: amountController,
-                      descriptionController: descriptionController,
-                      title: 'Add Expense',
-                      bottomTitle: 'Add Expense',
+                  return CommonBottomSheet(
+                    amountController: amountController,
+                    descriptionController: descriptionController,
+                    title: 'Add Expense',
+                    bottomTitle: 'Add Expense',
 
-                      onTap: (category, selectedDate) {
-                        final text = amountController.text.trim();
-                        if (text.isNotEmpty) {
-                          final amount = double.tryParse(text) ?? 0;
-                          context.read<TransactionCubit>().addExpense(
-                            amount: amount,
-                            category: category,
-                            date: selectedDate,
-                            description: descriptionController.text.trim(),
-                          );
-                          amountController.clear();
-                        }
-                        Navigator.pop(context);
-                      },
-                    ),
+                    onTap: (category, selectedDate) {
+                      final text = amountController.text.trim();
+                      if (text.isNotEmpty) {
+                        final amount = double.tryParse(text) ?? 0;
+                        context.read<TransactionCubit>().addExpense(
+                          amount: amount,
+                          category: category,
+                          date: selectedDate,
+                          description: descriptionController.text.trim(),
+                        );
+                        amountController.clear();
+                      }
+                      Navigator.pop(context);
+                    },
                   );
                 },
               );
