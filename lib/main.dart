@@ -6,6 +6,7 @@ import 'package:pocket_pal/core/shared/bottom_nav/presentation/bottom_nav_screen
 import 'package:pocket_pal/features/home/cubit/transaction_cubit.dart';
 import 'package:pocket_pal/features/profile/cubit/profile_cubit.dart';
 import 'package:pocket_pal/features/reminders/cubit/reminder_cubit.dart';
+import 'package:pocket_pal/features/savings/cubit/savings_cubit.dart';
 
 void main() async {
   // runApp(const MyApp());
@@ -14,6 +15,7 @@ void main() async {
   await Hive.openBox('transactions');
   await Hive.openBox('profile');
   await Hive.openBox('reminders');
+  await Hive.openBox('savings');
 
   runApp(const MyApp());
 }
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => TransactionCubit()),
         BlocProvider(create: (context) => ProfileCubit()),
         BlocProvider(create: (context) => ReminderCubit()),
+        BlocProvider(create: (context) => SavingsCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

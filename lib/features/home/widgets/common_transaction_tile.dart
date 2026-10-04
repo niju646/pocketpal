@@ -8,7 +8,7 @@ Widget commonTransactionTile({
   required bool isIncome,
 }) {
   return Container(
-    margin: const EdgeInsets.only(bottom: 10),
+    margin: const EdgeInsets.only(bottom: 2),
     padding: const EdgeInsets.all(14),
     decoration: BoxDecoration(
       color: Colors.white,

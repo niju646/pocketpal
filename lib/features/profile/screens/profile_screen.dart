@@ -6,6 +6,7 @@ import 'package:pocket_pal/features/profile/cubit/profile_cubit.dart';
 import 'package:pocket_pal/features/profile/screens/about/about_screen.dart';
 import 'package:pocket_pal/features/profile/screens/about/privacy_screen.dart';
 import 'package:pocket_pal/features/profile/screens/edit_profile.dart';
+import 'package:pocket_pal/features/savings/screens/saving_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -123,6 +124,19 @@ class ProfileScreen extends StatelessWidget {
                   title: 'Notifications',
                   subtitle: 'Manage your notifications',
                   onTap: () {},
+                ),
+                const Divider(height: 1),
+
+                _buildSettingsTile(
+                  icon: Icons.savings_outlined,
+                  title: 'Savings',
+                  subtitle: 'Manage your savings',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SavingsScreen()),
+                    );
+                  },
                 ),
               ],
             ),

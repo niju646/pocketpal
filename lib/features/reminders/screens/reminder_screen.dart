@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pocket_pal/core/shared/utlis/date_helper.dart';
+import 'package:pocket_pal/core/theme/app_colors.dart';
+import 'package:pocket_pal/features/home/widgets/common_empty_screen.dart';
 import 'package:pocket_pal/features/reminders/cubit/reminder_cubit.dart';
+import 'package:pocket_pal/features/reminders/screens/reminders_listing_screen.dart';
 import 'package:pocket_pal/features/reminders/widgets/reminder_add_card.dart';
 import 'package:pocket_pal/features/reminders/widgets/reminder_card.dart';
 
@@ -29,9 +32,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FF),
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF8F9FF),
+        backgroundColor: AppColors.backgroundColor,
         title: Text(
           'Recurring Bills & Reminders',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -146,14 +149,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
                     titleController.clear();
                     amountController.clear();
                     dateController.clear();
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.green,
-                        content: Text('Reminder created'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
                   },
                 ),
               ),
@@ -165,7 +160,17 @@ class _ReminderScreenState extends State<ReminderScreen> {
                     'Recent Bills',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
-                  TextButton(onPressed: () {}, child: const Text('See all')),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RemindersListingScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('See all'),
+                  ),
                 ],
               ),
 
@@ -174,13 +179,21 @@ class _ReminderScreenState extends State<ReminderScreen> {
                   final reminders = state.reminders;
 
                   if (reminders.isEmpty) {
-                    return const Center(child: Text('No reminders'));
+                    return CommonEmptyScreen(
+                      icon: Icons.calendar_month,
+                      title: "No Reminders",
+                      message: 'Create a reminder to start',
+                    );
                   }
+
+                  final reminderCount = reminders.length > 3
+                      ? 3
+                      : reminders.length;
 
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: reminders.length,
+                    itemCount: reminderCount,
                     itemBuilder: (context, index) {
                       final reminder = reminders[index];
                       return ReminderCard(
